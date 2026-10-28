@@ -1,0 +1,159 @@
+<?xml version='1.0' encoding='utf-8'?>
+<flowgorithm fileversion="4.2">
+    <attributes>
+        <attribute name="name" value="MoneyGrow_Simple" />
+        <attribute name="authors" value="Dell" />
+        <attribute name="about" value="Simple three-bank savings calculator. Example bank rates and terms." />
+        <attribute name="saved" value="2026-10-28 10:27:43 PM" />
+        <attribute name="created" value="RGVsbDtERVNLVE9QLU5QNTZIMFE7MjAyNi0xMC0yODswMjoyMzo1NyBQTTsyNzE4" />
+        <attribute name="edited" value="RGVsbDtERVNLVE9QLU5QNTZIMFE7MjAyNi0xMC0yODsxMDoyNzo0MyBQTTsyOzI4MjU=" />
+    </attributes>
+    <function name="Main" type="None" variable="">
+        <parameters />
+        <body>
+            <declare name="money" type="Real" array="False" size="" />
+            <declare name="add" type="Real" array="False" size="" />
+            <declare name="bank" type="Integer" array="False" size="" />
+            <declare name="rate" type="Real" array="False" size="" />
+            <declare name="minMoney" type="Real" array="False" size="" />
+            <declare name="minMonths" type="Integer" array="False" size="" />
+            <declare name="option" type="Integer" array="False" size="" />
+            <declare name="months" type="Integer" array="False" size="" />
+            <declare name="month" type="Integer" array="False" size="" />
+            <declare name="balance" type="Real" array="False" size="" />
+            <declare name="goal" type="Real" array="False" size="" />
+            <declare name="interest" type="Real" array="False" size="" />
+            <declare name="monthInterest" type="Real" array="False" size="" />
+            <output expression="&quot;МӨНГӨӨ ӨСГӨЕ&quot;" newline="True" />
+            <output expression="&quot;Хүүг сар бүр бодож, мөнгөө сарын эцэст нэмнэ&quot;" newline="True" />
+            <output expression="&quot;Анхны хуримтлал (төгрөг):&quot;" newline="True" />
+            <input variable="money" />
+            <output expression="&quot;Сар бүр нэмэх мөнгө (төгрөг):&quot;" newline="True" />
+            <input variable="add" />
+            <while expression="money &lt; 100000 or add &lt; 0">
+                <output expression="&quot;Анхны хуримтлал 100000-аас багагүй, сарын нэмэлт 0-ээс багагүй байх ёстой&quot;" newline="True" />
+                <output expression="&quot;Анхны хуримтлалаа дахин оруулна уу:&quot;" newline="True" />
+                <input variable="money" />
+                <output expression="&quot;Сар бүр нэмэх мөнгөө дахин оруулна уу:&quot;" newline="True" />
+                <input variable="add" />
+            </while>
+            <call expression="ShowBanks()" />
+            <assign variable="bank" expression="0" />
+            <assign variable="minMoney" expression="0" />
+            <while expression="bank == 0">
+                <output expression="&quot;Банк сонгоно уу (1=А, 2=Б, 3=В):&quot;" newline="True" />
+                <input variable="bank" />
+                <if expression="bank == 1">
+                    <then>
+                        <assign variable="rate" expression="0.16" />
+                        <assign variable="minMoney" expression="1000000" />
+                        <assign variable="minMonths" expression="6" />
+                    </then>
+                    <else>
+                        <if expression="bank == 2">
+                            <then>
+                                <assign variable="rate" expression="0.14" />
+                                <assign variable="minMoney" expression="100000" />
+                                <assign variable="minMonths" expression="3" />
+                            </then>
+                            <else>
+                                <if expression="bank == 3">
+                                    <then>
+                                        <assign variable="rate" expression="0.18" />
+                                        <assign variable="minMoney" expression="2000000" />
+                                        <assign variable="minMonths" expression="24" />
+                                    </then>
+                                    <else>
+                                        <output expression="&quot;Банкны дугаар буруу байна.&quot;" newline="True" />
+                                        <assign variable="bank" expression="0" />
+                                    </else>
+                                </if>
+                            </else>
+                        </if>
+                    </else>
+                </if>
+                <if expression="bank != 0 and money &lt; minMoney">
+                    <then>
+                        <output expression="&quot;Таны анхны хуримтлал сонгосон банкны шаардлагад хүрэлцэхгүй байна.&quot;" newline="True" />
+                        <assign variable="bank" expression="0" />
+                    </then>
+                    <else />
+                </if>
+            </while>
+            <output expression="&quot;Жилийн хүү: &quot; &amp; (rate * 100) &amp; &quot;%&quot;" newline="True" />
+            <output expression="&quot;Хадгалах хамгийн бага хугацаа: &quot; &amp; minMonths &amp; &quot; сар&quot;" newline="True" />
+            <output expression="&quot;Хуримтлалын зорилго:&quot;" newline="True" />
+            <output expression="&quot;1. Сонгосон хугацааны эцсийн хуримтлалыг тооцох&quot;" newline="True" />
+            <output expression="&quot;2. Зорилтот хуримтлалд хүрэх хугацааг тооцох&quot;" newline="True" />
+            <input variable="option" />
+            <while expression="option != 1 and option != 2">
+                <output expression="&quot;Сонголт (1 эсвэл 2):&quot;" newline="True" />
+                <input variable="option" />
+            </while>
+            <assign variable="balance" expression="money" />
+            <assign variable="month" expression="0" />
+            <if expression="option == 1">
+                <then>
+                    <output expression="&quot;Хадгалах хугацаа (сар):&quot;" newline="True" />
+                    <input variable="months" />
+                    <while expression="months &lt; minMonths or months &gt; 600">
+                        <output expression="&quot;Энэ банкны хугацаа &quot; &amp; minMonths &amp; &quot;-аас 600 сар байна. Дахин оруулна уу:&quot;" newline="True" />
+                        <input variable="months" />
+                    </while>
+                    <output expression="&quot;САР БҮРИЙН ХУРИМТЛАЛ&quot;" newline="True" />
+                    <output expression="&quot;Сар | Тухайн сарын хүү | Сарын эцсийн үлдэгдэл&quot;" newline="True" />
+                    <while expression="month &lt; months">
+                        <assign variable="monthInterest" expression="balance * rate / 12" />
+                        <assign variable="balance" expression="balance + monthInterest + add" />
+                        <assign variable="month" expression="month + 1" />
+                        <output expression="&quot;Сар: &quot; &amp; month &amp; &quot; | Хүү: &quot; &amp; monthInterest &amp; &quot; | Үлдэгдэл: &quot; &amp; balance" newline="True" />
+                    </while>
+                </then>
+                <else>
+                    <output expression="&quot;Зорилтот мөнгөн дүн:&quot;" newline="True" />
+                    <input variable="goal" />
+                    <while expression="goal &lt;= 0">
+                        <output expression="&quot;Зорилтот дүнгээ оруулна уу:&quot;" newline="True" />
+                        <input variable="goal" />
+                    </while>
+                    <output expression="&quot;САР БҮРИЙН ХУРИМТЛАЛ&quot;" newline="True" />
+                    <output expression="&quot;Сар | Тухайн сарын хүү | Сарын эцсийн үлдэгдэл&quot;" newline="True" />
+                    <while expression="balance &lt; goal and month &lt; 600">
+                        <assign variable="monthInterest" expression="balance * rate / 12" />
+                        <assign variable="balance" expression="balance + monthInterest + add" />
+                        <assign variable="month" expression="month + 1" />
+                        <output expression="&quot;Сар: &quot; &amp; month &amp; &quot; | Хүү: &quot; &amp; monthInterest &amp; &quot; | Үлдэгдэл: &quot; &amp; balance" newline="True" />
+                    </while>
+                    <if expression="balance &gt;= goal">
+                        <then>
+                            <if expression="month &lt; minMonths">
+                                <then>
+                                    <output expression="&quot;Анхааруулга: Зорилгод хүрсэн ч банкны хамгийн бага хугацаа &quot; &amp; minMonths &amp; &quot; сар байна.&quot;" newline="True" />
+                                </then>
+                                <else />
+                            </if>
+                        </then>
+                        <else>
+                            <output expression="&quot;600 сарын дотор зорилтот дүнд хүрээгүй байна&quot;" newline="True" />
+                        </else>
+                    </if>
+                </else>
+            </if>
+            <assign variable="interest" expression="balance - money - add * month" />
+            <output expression="&quot;Тооцооллын үр дүн&quot;" newline="True" />
+            <output expression="&quot;Хугацаа: &quot; &amp; Int(month / 12) &amp; &quot; жил &quot; &amp; (month % 12) &amp; &quot; сар байна.&quot;" newline="True" />
+            <output expression="&quot;Эцсийн хуримтлал: &quot; &amp; balance" newline="True" />
+            <output expression="&quot;Нийт хүүгийн орлого: &quot; &amp; interest" newline="True" />
+        </body>
+    </function>
+    <function name="ShowBanks" type="None" variable="">
+        <parameters />
+        <body>
+            <output expression="&quot;БАНКУУДЫН ХАРЬЦУУЛАЛТ&quot;" newline="True" />
+            <output expression="&quot;Дугаар | Банк | Жилийн хүү | Доод мөнгө | Доод хугацаа&quot;" newline="True" />
+            <output expression="&quot;3 В | 18% | 2000000 | 24 сар&quot;" newline="True" />
+            <output expression="&quot;1 A | 16%  | 1000000 | 6 сар&quot;" newline="True" />
+            <output expression="&quot;2 Б | 14%  | 100000  | 3 сар&quot;" newline="True" />
+        </body>
+    </function>
+</flowgorithm>
